@@ -1,0 +1,548 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Acompanhe suas Entregas em Tempo Real | Loggi</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;500;600;700&display=swap' );
+
+        :root {
+            --loggi-blue: #0033a0;
+            --loggi-light-blue: #00b2e3;
+            --loggi-green: #4CAF50;
+            --loggi-text: #2e3545;
+            --loggi-gray: #f5f5f5;
+            --loggi-border: #e0e0e0;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: "Open Sans", Tahoma, Helvetica, Arial, sans-serif;
+            color: var(--loggi-text);
+            background-color: #fff;
+            line-height: 1.5;
+            overflow-x: hidden;
+        }
+
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px 40px;
+            background-color: #fff;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+            position: relative;
+            z-index: 10;
+            width: 100%;
+        }
+
+        .logo {
+            height: 40px;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 30px;
+            align-items: center;
+        }
+
+        .nav-links a {
+            text-decoration: none;
+            color: var(--loggi-text);
+            font-weight: 500;
+            font-size: 14px;
+            padding: 8px 0;
+            transition: color 0.2s;
+            white-space: nowrap;
+        }
+
+        .nav-links a:hover {
+            color: var(--loggi-light-blue);
+        }
+
+        .nav-links a.track {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        .nav-links a.track svg {
+            fill: #ccc;
+        }
+
+        .nav-links a.login {
+            margin-left: 20px;
+        }
+
+        .nav-links a.cta {
+            color: var(--loggi-light-blue);
+            border: 1px solid var(--loggi-light-blue);
+            border-radius: 4px;
+            padding: 8px 16px;
+            margin-left: 10px;
+        }
+
+        .hero-section {
+            background: linear-gradient(45deg, var(--loggi-blue), #0066cc);
+            color: white;
+            padding: 60px 40px;
+            position: relative;
+            overflow: hidden;
+            min-height: 500px;
+        }
+
+        .hero-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            position: relative;
+            z-index: 2;
+        }
+
+        .hero-section h1 {
+            font-size: 2.8rem;
+            margin-bottom: 20px;
+            max-width: 800px;
+            font-weight: 700;
+            text-shadow: 0 1px 3px rgba(0,0,0,0.2);
+        }
+
+        .hero-section p {
+            font-size: 1.2rem;
+            margin-bottom: 30px;
+            max-width: 700px;
+            font-weight: 400;
+        }
+
+        .hero-image {
+            position: absolute;
+            bottom: 0;
+            right: 0;
+            width: 50%;
+            max-width: 600px;
+            z-index: 1;
+        }
+
+        .btn-primary {
+            background-color: var(--loggi-light-blue);
+            color: white;
+            padding: 12px 24px;
+            border-radius: 4px;
+            text-decoration: none;
+            font-weight: bold;
+            display: inline-block;
+            border: none;
+            cursor: pointer;
+            transition: background-color 0.2s;
+        }
+
+        .btn-primary:hover {
+            background-color: #0099cc;
+        }
+
+        .tracking-container {
+            background-color: white;
+            border-radius: 8px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+            max-width: 450px;
+            margin: 0 auto;
+            padding: 30px;
+            position: absolute;
+            top: 100px;
+            right: 40px;
+            z-index: 5;
+            max-height: 80vh;
+            overflow-y: auto;
+        }
+
+        .back-button {
+            display: inline-flex;
+            align-items: center;
+            margin-bottom: 20px;
+            color: var(--loggi-text);
+            text-decoration: none;
+        }
+
+        .status {
+            display: flex;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        .status-dot {
+            width: 12px;
+            height: 12px;
+            background-color: var(--loggi-green);
+            border-radius: 50%;
+            margin-right: 10px;
+        }
+
+        .delivery-info {
+            margin-bottom: 20px;
+        }
+
+        .delivery-info h3 {
+            margin-bottom: 5px;
+            color: var(--loggi-text);
+            font-size: 16px;
+            font-weight: 600;
+        }
+
+        .delivery-info p {
+            margin: 5px 0;
+            color: #666;
+            font-size: 14px;
+        }
+
+        .delivery-info a {
+            color: var(--loggi-light-blue);
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 15px 0;
+            border-top: 1px solid var(--loggi-border);
+        }
+
+        .delivery-info a:hover {
+            color: var(--loggi-blue);
+        }
+
+        .footer {
+            background-color: var(--loggi-gray);
+            padding: 40px 20px;
+            text-align: center;
+        }
+
+        .footer-links {
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 20px;
+            margin-bottom: 20px;
+        }
+
+        .footer-links a {
+            color: #666;
+            text-decoration: none;
+            font-size: 14px;
+        }
+
+        .footer-links a:hover {
+            color: var(--loggi-blue);
+        }
+
+        .app-links {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            margin-bottom: 30px;
+        }
+
+        .app-links img {
+            height: 40px;
+        }
+
+        .social-links {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+
+        .social-links a {
+            color: #333;
+            text-decoration: none;
+        }
+
+        .divider {
+            display: inline-block;
+            margin: 0 10px;
+            color: #ccc;
+        }
+
+        /* Responsividade */
+        @media (max-width: 1200px) {
+            .hero-section h1 {
+                font-size: 2.4rem;
+            }
+            
+            .tracking-container {
+                right: 20px;
+            }
+        }
+
+        @media (max-width: 1024px) {
+            .nav-links {
+                gap: 15px;
+            }
+            
+            .hero-section {
+                padding: 40px 20px;
+            }
+            
+            .hero-section h1 {
+                font-size: 2.2rem;
+            }
+            
+            .hero-image {
+                width: 45%;
+            }
+        }
+
+        @media (max-width: 900px) {
+            .tracking-container {
+                position: relative;
+                top: -50px;
+                right: auto;
+                margin: 0 auto;
+                max-width: 90%;
+            }
+            
+            .hero-section {
+                padding-bottom: 100px;
+            }
+            
+            .hero-image {
+                position: relative;
+                width: 100%;
+                max-width: 500px;
+                margin: 30px auto 0;
+                display: block;
+            }
+            
+            .hero-content {
+                text-align: center;
+            }
+            
+            .hero-section h1, 
+            .hero-section p {
+                margin-left: auto;
+                margin-right: auto;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .header {
+                flex-wrap: wrap;
+                padding: 15px 20px;
+            }
+            
+            .nav-links {
+                margin-top: 15px;
+                flex-wrap: wrap;
+                justify-content: center;
+                width: 100%;
+                gap: 10px;
+            }
+            
+            .nav-links a.login,
+            .nav-links a.cta {
+                margin-left: 0;
+            }
+            
+            .hero-section h1 {
+                font-size: 1.8rem;
+            }
+            
+            .hero-section p {
+                font-size: 1rem;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .header {
+                padding: 10px 15px;
+            }
+            
+            .logo {
+                height: 30px;
+            }
+            
+            .nav-links {
+                gap: 8px;
+            }
+            
+            .nav-links a {
+                font-size: 12px;
+                padding: 6px 8px;
+            }
+            
+            .hero-section {
+                padding: 30px 15px 80px;
+            }
+            
+            .hero-section h1 {
+                font-size: 1.5rem;
+            }
+            
+            .tracking-container {
+                padding: 15px;
+            }
+            
+            .delivery-info h3 {
+                font-size: 14px;
+            }
+            
+            .delivery-info p {
+                font-size: 12px;
+            }
+            
+            .btn-primary {
+                padding: 10px 20px;
+                font-size: 14px;
+            }
+            
+            .footer-links {
+                gap: 10px;
+            }
+            
+            .footer-links a {
+                font-size: 12px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header class="header">
+        <img src="images/loggi-logo.svg" alt="Loggi" class="logo">
+        <div class="nav-links">
+            <a href="javascript:window.location.reload();">Para você</a>
+            <a href="javascript:window.location.reload();">Para empresas</a>
+            <a href="javascript:window.location.reload();">Para entregar</a>
+            <a href="javascript:window.location.reload();">Vendas e suporte</a>
+            <a href="javascript:window.location.reload();" class="track">
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="#ccc">
+                    <path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/>
+                </svg>
+                Acompanhe seu pedido
+            </a>
+            <a href="javascript:window.location.reload( );" class="login">Entrar</a>
+            <a href="javascript:window.location.reload();" class="cta">Criar conta</a>
+        </div>
+    </header>
+
+    <div class="hero-section">
+        <div class="hero-content">
+            <h1>A melhor solução de envio de encomendas para todo o Brasil.</h1>
+            <p>Alcance mais clientes com entregas locais e nacionais. Com a Loggi você economiza tempo e dinheiro</p>
+            <a href="javascript:window.location.reload();" class="btn-primary">Enviar agora</a>
+        </div>
+        <img src="images/truck.jpg" alt="Caminhão de entrega Loggi" class="hero-image">
+    </div>
+
+    <div class="tracking-container">
+        <a href="javascript:window.location.reload();" class="back-button">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M19 12H5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                <path d="M12 19L5 12L12 5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+        </a>
+
+        <div class="status">
+            <div class="status-dot"></div>
+            <span>Entregue</span>
+        </div>
+
+        <div class="delivery-info">
+            <h3>Entregue com algum conhecido</h3>
+            <p>Entregue em 16 de maio de 2025 às 16:57</p>
+        </div>
+
+        <div class="delivery-info">
+            <h3>#PAN0002594400041</h3>
+        </div>
+
+        <div class="delivery-info">
+            <h3>Recebido por</h3>
+            <p>Vânia</p>
+            <p>CPF 650**85</p>
+        </div>
+
+        <div class="delivery-info">
+            <h3>Onde foi deixado</h3>
+            <p>Com algum conhecido • 4 201</p>
+        </div>
+
+        <div class="delivery-info">
+            <h3>Enviado por</h3>
+            <p>pandora</p>
+        </div>
+
+        <div class="delivery-info">
+            <h3>Endereço de entrega</h3>
+            <p>Rua aquidauana 124</p>
+        </div>
+
+        <div class="delivery-info">
+            <a href="javascript:window.location.reload( );">
+                Mostrar histórico de rastreio
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M9 18L15 12L9 6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+            </a>
+        </div>
+
+        <div class="delivery-info">
+            <a href="javascript:window.location.reload( );">
+                Relatar problema com o pacote
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M9 18L15 12L9 6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+            </a>
+        </div>
+    </div>
+
+    <footer class="footer">
+        <div class="footer-links">
+            <a href="javascript:window.location.reload( );">Para você</a>
+            <a href="javascript:window.location.reload();">Para empresas</a>
+            <a href="javascript:window.location.reload();">Para entregar</a>
+            <a href="javascript:window.location.reload();">Loggi</a>
+            <a href="javascript:window.location.reload();">Dúvidas</a>
+            <a href="javascript:window.location.reload();">Entregador via aplicativo</a>
+            <a href="javascript:window.location.reload();">Entregador para escritórios</a>
+            <a href="javascript:window.location.reload();">Soluções para varejo</a>
+            <a href="javascript:window.location.reload();">Entrega para e-commerces</a>
+            <a href="javascript:window.location.reload();">Seja uma Transportadora Leve</a>
+            <a href="javascript:window.location.reload();">Seja um entregador</a>
+            <a href="javascript:window.location.reload();">Trabalhe conosco</a>
+            <a href="javascript:window.location.reload();">loggi.com/ajuda</a>
+            <a href="javascript:window.location.reload();">Imprensa</a>
+        </div>
+
+        <div class="app-links">
+            <a href="javascript:window.location.reload();"><img src="images/google-play.png" alt="Disponível na Google Play"></a>
+            <a href="javascript:window.location.reload();"><img src="images/app-store.png" alt="Disponível na App Store"></a>
+        </div>
+
+        <div class="social-links">
+            <a href="javascript:window.location.reload();" title="Acessar a Loggi no Facebook">Facebook</a>
+            <a href="javascript:window.location.reload();" title="Acessar a Loggi no Linkedin">LinkedIn</a>
+            <a href="javascript:window.location.reload();" title="Acessar a Loggi no Twitter">Twitter</a>
+            <a href="javascript:window.location.reload();" title="Acessar a Loggi no Youtube">YouTube</a>
+        </div>
+
+        <p>Tel: <a href="javascript:window.location.reload();">4020-1460 (Nacional)</a> - Todos os dias das 6h às 23h59</p>
+
+        <div class="footer-links">
+            <a href="javascript:window.location.reload();">Tratamento de dados pessoais para fornecedores</a>
+            <span class="divider">·</span>
+            <a href="javascript:window.location.reload();">Aviso de privacidade aos clientes</a>
+            <span class="divider">·</span>
+            <a href="javascript:window.location.reload();">Termos de uso para clientes</a>
+            <span class="divider">·</span>
+            <a href="javascript:window.location.reload();">Termos de uso para entregadores</a>
+            <span class="divider">·</span>
+            <a href="javascript:window.location.reload();">Loggi Line</a>
+            <span class="divider">·</span>
+            <span>Português-BR</span>
+        </div>
+    </footer>
+</body>
+</html>
